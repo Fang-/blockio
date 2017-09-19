@@ -89,7 +89,7 @@
   .^(arch %cy pax)
 ::
 ++  hav-sec                                             ::>  have /sec/io/block?
-  (hav-file /=home/(scot %da now.bol)/sec/io/block/atom)
+  (hav-file (welp (tope beak-now ~) /sec/io/block/atom))
 ::
 ++  get-sec                                             ::>  get /sec/io/block
   ^-  secrets
@@ -98,7 +98,7 @@
   %-  cue
   %-  need
   =-  (de:crua ames-secret (slav %uw -))
-  .^(@ %cx /=home/(scot %da now.bol)/sec/io/block/atom)
+  .^(@ %cx (welp (tope beak-now ~) /sec/io/block/atom))
 ::
 ++  hav-key                                             ::>  have key for coin?
   |=  con/currency
