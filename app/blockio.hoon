@@ -820,7 +820,7 @@
         "::    transfer an amount of active coin to the target (ship or address)"
         "::  talk \{y/n}"
         "::    toggle listening for in-talk commands"
-        "::    responds to `+tip [~ship-name] [amount] [currency]`"
+        "::    responds to `!tip [~ship-name] [amount] [currency]`"
         "::::"
       ==
     ::
