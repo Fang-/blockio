@@ -7,7 +7,8 @@
 To get set up, you need a few things.
 
 1. Create an account on [block.io](https://block.io). Optionally put some coins in there.
-2. Make sure [this change](https://github.com/urbit/arvo/pull/416/files) has made it onto your ship. This allows you to use capitals in your `web.plan` usernames, necessary for representing cryptocurrency addresses. (This may or may not have gotten pushed out over the network already. Comets that existed before this post will have to manually put it in.)
+2. ~Make sure [this change](https://github.com/urbit/arvo/pull/416/files) has made it onto your ship. This allows you to use capitals in your `web.plan` usernames, necessary for representing cryptocurrency addresses. (This may or may not have gotten pushed out over the network already. Comets that existed before this post will have to manually put it in.)~  
+The change should have been pushed to all planets, and be included in all new comets.
 3. Checkout or download [all the files](https://github.com/Fang-/blockio) for this, and put them into your ship's home desk. (In the future, I can probably set things up so that you can `|sync %home ~palfun-foslup %blockio` or something.)
 4. `|start %blockio`. You can now ctrl-x to and from in, just like talk and dojo.
 5. Select the coin you want to work with by doing `coin doge` or similar. Enter your API key for the current coin by entering `key xxxx-xxxx-xxxx-xxxx`. If you want to make transactions, also put in your block.io pin. `pin your-secret`.
