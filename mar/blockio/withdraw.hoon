@@ -3,7 +3,7 @@
   ::
 /-  blockio
 /+  blockio, httr-to-json
-[. blockio]
+=>  [. blockio]  ::TODO  =,
 |_  wil/(each withdrawal error)
 ::
 ++  grab                                                ::>  convert to balance
@@ -11,12 +11,12 @@
   ++  noun  &+withdrawal                                ::<  ...from noun
   ::
   ++  httr                                              ::<  ...from http result
-    |=  hit/^httr
+    |=  hit/httr:eyre
     ::NOTE  because httr-to-json errors if not status 2xx.
     (json (httr-to-json hit(p 200)))
   ::
   ++  json                                              ::>  ...from json
-    =>  [jo .]
+    =>  [dejs-soft:format .]  ::TODO  =,
     |=  jon/json
     ^-  (each withdrawal error)
     =+  ((ot data+(om sa) ~) jon)

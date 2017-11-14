@@ -3,8 +3,9 @@
 ::::  /hoon/github/com/sec
   ::
 /-  blockio
-/+    basic-auth
-[. blockio]
+/+  basic-auth
+=,  blockio
+=,  eyre
 !:
 |_  {bal/(bale @) $~}
 ++  filter-request

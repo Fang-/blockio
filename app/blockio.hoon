@@ -7,8 +7,8 @@
 ::TODO  eventually do client-side tx signing, maybe:
 ::      https://block.io/api/simple/signing
 ::
-/-  blockio, talk, plan-acct, plan-diff
-/+  blockio, talk, sole
+/-  blockio, hall, plan-acct, plan-diff
+/+  blockio, hall, sole
 !:
 [. blockio sole]
 ::
@@ -16,7 +16,7 @@
 ++  state                                               ::>  full app state
   $:  soles/(map bone sole-share)                       ::<  console state
       style/manners                                     ::<  behavior config
-      heard/(set serial:talk)                           ::<  parsed messages
+      heard/(set serial:hall)                           ::<  parsed messages
       nomes/(map tape @p)                               ::<  recent comet names
       pends/(pair @ud (map @ud pending))                ::<  pending actions
   ==                                                    ::
@@ -26,7 +26,7 @@
   ==                                                    ::
 ++  pending                                             ::>  pending action
   $:  act/action                                        ::<  original action
-      aud/(unit audience:talk)                          ::<  informable audience
+      aud/(unit audience:hall)                          ::<  informable audience
   ==                                                    ::
 ++  action                                              ::>  console action
   $%  {$coin cur/currency}                              ::<  set active currency
@@ -50,24 +50,24 @@
 ++  move  {bone card}                                   ::<  [target side-effect]
 ++  card                                                ::>  side-effect
   $%  {$diff $sole-effect sole-effect}                  ::<  cli change
-      {$hiss wire {$~ $~} mark {$purl purl}}            ::<  http request
-      {$exec wire @p $~ {beak silk}}                    ::<  data write?
-      {$info wire @p toro}                              ::<  internal edit
-      {$warp wire sock riff}                            ::<  file request
+      {$hiss wire {$~ $~} mark {$purl purl:eyre}}       ::<  http request
+      {$exec wire @p $~ {beak silk:ford}}               ::<  data write?
+      {$info wire @p toro:clay}                         ::<  internal edit
+      {$warp wire sock riff:clay}                       ::<  file request
       {$peer wire dock path}                            ::<  start subscription
       {$pull wire dock $~}                              ::<  end subscription
-      {$poke wire {@p term} $talk-command command:talk} ::<  talk-command poke
+      {$poke wire {@p term} $hall-action action:hall}   ::<  hall-action poke
       {$wait wire @da}                                  ::<  timer
   ==                                                    ::
 ::                                                      ::
 ++  burl  "https://block.io/api/v2/"                    ::<  base api url
 --
 ::
-|_  {bol/bowl state}
+|_  {bol/bowl:gall state}
 ::
 ++  prep                                                ::>  adapt state
   |=  old/(unit state)
-  ^-  (quip move ..prep)
+  ^-  (quip move _..prep)
   ?~  old  [~ ..prep]
   [~ ..prep(+<+ u.old)]
 ::
@@ -89,7 +89,7 @@
   .^(arch %cy pax)
 ::
 ++  hav-sec                                             ::>  have /sec/io/block?
-  (hav-file (welp (tope beak-now ~) /sec/io/block/atom))
+  (hav-file (welp (en-beam:format beak-now ~) /sec/io/block/atom))
 ::
 ++  get-sec                                             ::>  get /sec/io/block
   ^-  secrets
@@ -97,8 +97,8 @@
   %-  secrets
   %-  cue
   %-  need
-  =-  (de:crua ames-secret (slav %uw -))
-  .^(@ %cx (welp (tope beak-now ~) /sec/io/block/atom))
+  =-  (de:crua:crypto ames-secret (slav %uw -))
+  .^(@ %cx (welp (en-beam:format beak-now ~) /sec/io/block/atom))
 ::
 ++  hav-key                                             ::>  have key for coin?
   |=  con/currency
@@ -149,7 +149,7 @@
       ==
   ::
   ++  ta-done                                           ::>  fold core
-    ^-  (quip move +>)
+    ^-  (quip move _+>)
     ?^  actions
       ta-done:(ta-actions(actions ~) actions)
     :-  (flop moves)
@@ -175,7 +175,7 @@
     ^+  +>
     %-  ta-deal
     =-  [%hiss [(scot %ud (dec p.pends)) wir] [~ ~] mar %purl -]
-    =+  pur=(need (epur (crip url)))
+    =+  pur=(need (de-purl:html (crip url)))
     pur(r [['api_key' cur] r.pur])
   ::
   ::
@@ -184,7 +184,7 @@
     +>(actions [a actions])
   ::
   ++  ta-pend                                           ::>  action is pending
-    |=  {act/action aud/(unit audience:talk)}
+    |=  {act/action aud/(unit audience:hall)}
     %.  p.pends
     %_  ta-wait
       p.pends  +(p.pends)
@@ -204,7 +204,7 @@
     ==
   ::
   ++  ta-audience                                       ::>  audience of pend
-    ^-  (unit audience:talk)
+    ^-  (unit audience:hall)
     ?~  pen  ~
     aud:(~(got by q.pends) u.pen)
   ::
@@ -247,11 +247,11 @@
     |=  sec/secrets
     =+  dat=(jam sec)
     %-  ta-deal
-    =.  dat  (scot %uw (en:crua ames-secret dat))
+    =.  dat  (scot %uw (en:crua:crypto ames-secret dat))
     :+  %exec  /sec/io/block
     :^  our.bol  ~  beak-now
     :+  %cast  %atom
-    $+[%mime !>([/ (taco dat)])]
+    $+[%mime !>([/ (as-octs:mimes:html dat)])]
   ::
   ++  ta-put-plan                                       ::>  put plan into file
     |=  pif/plan-diff
@@ -289,7 +289,7 @@
     =+  woh=(scot %p who)
     =/  soc/sock
       [our.bol who]
-    =/  rif/riff
+    =/  rif/riff:clay
       [%home `[%sing %x [%da (sub now.bol ~m5)] /web/plan]]
     (ta-deal %warp [%plan (scot %ud (dec p.pends)) (scot %p who) pax] soc rif)
   ::
@@ -341,7 +341,7 @@
     ==
   ::
   ++  ta-transfer                                       ::>  try send to target
-    |=  {who/target cur/currency val/tape aud/(unit audience:talk) ori/(unit @p)}
+    |=  {who/target cur/currency val/tape aud/(unit audience:hall) ori/(unit @p)}
     ^+  +>
     =.  +>  (ta-pend [%transfer (fall ori who) cur val] ?~(aud ta-audience aud))
     ?^  who  (ta-request %withdraw who cur val)
@@ -367,12 +367,12 @@
       "Already not listening."
     ?:  yes  ta-sub-talk
     %-  ta-deal(talk.style yes)
-    [%pull /talk [our.bol %talk] ~]
+    [%pull /talk [our.bol %hall] ~]
   ::
   ++  ta-sub-talk                                       ::>  subscribe to inbox
     %-  ta-deal(talk.style &)
-    =-  [%peer /talk [our.bol %talk] -]
-    /f/[(main:talk our.bol)]/(scot %da now.bol)
+    =-  [%peer /talk [our.bol %hall] -]
+    /circle/inbox/grams/(scot %da now.bol)
   ::
   ::>  response events
   ::
@@ -387,7 +387,7 @@
       ?+  -.act.ped  !!
         $balance    "Balance request timed out."
         $transfer   ?^  who.act.ped  "Transfer timed out."
-                    "Address request to {(cite `@p`who.act.ped)} timed out."
+                    "Address request to {(cite:title `@p`who.act.ped)} timed out."
       ==
     ::TODO  this shit's just ridiculous
     =>  [sh-done:(~(sh-error sh osol) say) . say=say ped=ped]
@@ -422,7 +422,7 @@
     ==
   ::
   ++  ta-writ-plan                                      ::>  receive plan
-    |=  {wir/wire rot/riot}
+    |=  {wir/wire rot/riot:clay}
     ^+  +>
     ?~  pen  +>  ::  probably received after timeout.
     =.  don  &
@@ -453,26 +453,22 @@
       (ta-transfer u.adr cur (trip val) aud.ped `who)
     ==
   ::
-  ++  ta-read-grams                                     ::>  parse grams for cmd
-    |=  gaz/(list telegram:talk)
+  ++  ta-read-gram                                      ::>  parse gram for cmd
+    |=  gam/telegram:hall
     ^+  +>
-    ?~  gaz  +>
-    =*  gam  i.gaz
-    ?:  (~(has in heard) p.q.gam)  $(gaz t.gaz)
-    =.  heard  (~(put in heard) p.q.gam)
-    =*  sep  r.r.q.gam
+    ?:  (~(has in heard) uid.gam)  +>
+    =.  heard  (~(put in heard) uid.gam)
     =.  nomes
-      ?.  =((clan p.gam) %pawn)  nomes
-      (~(put by nomes) (cite p.gam) p.gam)
-    ?:  ?&  =(p.gam our.bol)
-            ?=($lin -.sep)
-            =((find "!tip ~" (trip q.sep)) [~ 0])
+      ?.  =((clan:title aut.gam) %pawn)  nomes
+      (~(put by nomes) (cite:title aut.gam) aut.gam)
+    ?.  ?&  =(aut.gam our.bol)
+            ?=($lin -.sep.gam)
+            =((find "!tip ~" (trip msg.sep.gam)) [~ 0])
         ==
-      =+  res=(ta-parse-gram q.sep)
-      ?~  res  +>.$
-      =.  +>.$  (ta-transfer who.u.res cur.u.res val.u.res `q.q.gam ~)
-      $(gaz t.gaz)
-    $(gaz t.gaz)
+      +>.$
+    =+  res=(ta-parse-gram msg.sep.gam)
+    ?~  res  +>.$
+    (ta-transfer who.u.res cur.u.res val.u.res `aud.gam ~)
   ::
   ++  ta-parse-gram                                     ::>  parse "!tip ~x c v"
     ::TODO  do better than just copy-pasting from sh-parse.
@@ -512,16 +508,12 @@
   ::>  talking
   ::
   ++  ta-lk-send                                        ::>  speech to audience
-    |=  {aud/audience:talk sep/speech:talk}
+    |=  {aud/audience:hall sep/speech:hall}
     ^+  +>
-    ::NOTE  this is such a mess, can't wait for new talk.
     %^  ta-deal  %poke  /speak
-    :^  [our.bol %talk]
-      %talk-command  %publish
-    :_  ~
-    :+  (shaf %thot eny.bol)
-      aud
-    [now.bol *bouquet:talk sep]
+    :+  [our.bol %hall]
+      %hall-action
+    [%phrase aud ~[sep]]
   ::
   ++  ta-lk-error                                       ::>  speak error
     |=  {err/error ped/pending}
@@ -529,8 +521,9 @@
     ?~  aud.ped  !!
     %+  ta-lk-send  u.aud.ped
     :+  %fat
-      [%text [(crip err) ~]]
+      [%name 'error message' %text [(crip err) ~]]
     :+  %app  dap.bol
+    :+  %lin  |
     ?+  -.act.ped  (crip err)
       $transfer   'Failed to transact.'
     ==
@@ -543,6 +536,7 @@
     ?^  who.act.ped  !!
     %+  ta-lk-send  u.aud.ped
     :+  %fat
+      :+  %name  'transaction details'
       :-  %text
       :~  (crip "paid: {paid.wil}:")
           (crip "sent: {sent.wil}")
@@ -550,8 +544,10 @@
           (crip "txid: {txid.wil}")
           (crip "https://chain.so/tx/{(cur-net coin.wil)}/{txid.wil}")
       ==
-    =-  [%app dap.bol (crip -)]
-    "Confirmed: {val.act.ped} {(scow %tas coin.wil)} to {(cite `@p`who.act.ped)}."
+    =-  [%app dap.bol %lin | (crip -)]
+    %+  weld
+      "Confirmed: {val.act.ped} {(scow %tas coin.wil)}"
+    " to {(cite:title `@p`who.act.ped)}."
   ::
   ++  sh                                                ::>  per console
     |_  {ost/bone share/sole-share}
@@ -742,23 +738,23 @@
       |=  a/tape
       =-  (weld - a)
       %+  runt
-        [(add 8 (lent (cite our.bol))) '·']
+        [(add 8 (lent (cite:title our.bol))) '·']
       " {(scow %tas coin.style)} > "
     ::
     ++  sh-pres                                         ::>  prefix as result
       |=  a/tape
       =-  (weld - a)
-      (runt [(add 7 (lent (cite our.bol))) ' '] "| ")
+      (runt [(add 7 (lent (cite:title our.bol))) ' '] "| ")
     ::
     ++  sh-prin                                         ::>  prefix as info
       |=  a/tape
       =-  (weld - a)
-      (runt [(add 7 (lent (cite our.bol))) ' '] ": ")
+      (runt [(add 7 (lent (cite:title our.bol))) ' '] ": ")
     ::
     ++  sh-pric                                         ::>  prefix as warning
       |=  a/tape
       =-  (weld - a)
-      (runt [(add 6 (lent (cite our.bol))) ' '] "!! ")
+      (runt [(add 6 (lent (cite:title our.bol))) ' '] "!! ")
     ::
     ::>  messages
     ::
@@ -776,7 +772,7 @@
     ::
     ++  sh-pending                                      ::>  show pending actions
       =-  (sh-effect [%mor [%txt "(inaccurate)"] (turn - |=({t/tape} [%txt t]))])
-      (turn (~(tap by q.pends)) sh-pender)
+      (turn ~(tap by q.pends) sh-pender)
     ::
     ++  sh-pender                                       ::>  render pend as tape
       |=  {num/@ud ped/pending}
@@ -867,44 +863,46 @@
 ::
 ++  peer-sole                                           ::>  new console
   |=  pax/path
-  ^-  (quip move +>)
+  ^-  (quip move _+>)
   ta-done:ta-peer-sole:ta
 ::
 ++  poke-sole-action                                    ::>  console event
   |=  act/sole-action
-  ^-  (quip move +>)
+  ^-  (quip move _+>)
   ta-done:(ta-sole-action:(taa /) act)
 ::
 ++  sigh-blockio-balance                                ::>  balance response
   |=  {wir/wire bal/(each balance error)}
-  ^-  (quip move +>)
+  ^-  (quip move _+>)
   ta-done:(ta-blockio-balance:(taa wir) bal)
 ::
 ++  sigh-blockio-withdraw                               ::>  balance response
   |=  {wir/wire wil/(each withdrawal error)}
-  ^-  (quip move +>)
+  ^-  (quip move _+>)
   ta-done:(ta-blockio-withdrawal:(taa wir) wil)
 ::
 ++  sigh-tang                                           ::>  error response
   |=  {wir/wire tan/tang}
-  ^-  (quip move +>)
+  ^-  (quip move _+>)
   %-  (slog >%blockio-sigh-tang< tan)
   [~ +>]
 ::
 ++  writ-plan                                           ::>  receive plan
-  |=  {wir/wire rot/riot}
-  ^-  (quip move +>)
+  |=  {wir/wire rot/riot:clay}
+  ^-  (quip move _+>)
   ?.  ?=({@ *} wir)  !!
   ta-done:(ta-writ-plan:(taa wir) t.wir rot)
 ::
 ++  made                                                ::>  data write result?
-  |=  {wir/wire @ res/gage}
-  ^-  (quip move +>)
+  |=  {wir/wire @ res/gage:ford}
+  ^-  (quip move _+>)
   :_  +>
   ?+  -.res  ~|(gage+-.res !!)
     $|  (mean p.res)
     $&  =-  [ost.bol %info write+~ our.bol -]~
-        (foal :(welp (tope beak-now ~) wir /[-.p.res]) p.res)
+        %+  foal:space:userlib
+          :(welp (en-beam:format beak-now ~) wir /[-.p.res])
+        p.res
   ==
 ::
 ++  quit                                                ::>  killed by talk
@@ -913,13 +911,18 @@
 ::
 ++  wake                                                ::>  kicked by timer
   |=  {wir/wire $~}
-  ^-  (quip move +>)
+  ^-  (quip move _+>)
   ta-done:ta-wake:(taa wir)
 ::
-++  diff-talk-report                                    ::>  accept talk report
-  |=  {wir/wire rep/report:talk}
-  ^-  (quip move +>)
-  ?+  -.rep  !!
-    $grams  ta-done:(ta-read-grams:(taa /) q.rep)
+++  diff-hall-prize                                     ::>  ignore talk prize
+  |=  {wire prize:hall}
+  [~ +>]
+::
+++  diff-hall-rumor                                     ::>  accept talk rumor
+  |=  {wir/wire rum/rumor:hall}
+  ^-  (quip move _+>)
+  ?+  rum  !!
+      {$circle $gram *}
+    ta-done:(ta-read-gram:(taa /) gam.nev.rum.rum)
   ==
 --

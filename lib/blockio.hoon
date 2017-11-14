@@ -2,7 +2,7 @@
 ::::  /hoon/blockio/lib
   ::
 /-  blockio
-[. ^blockio]
+=,  ^blockio
 |%
 ++  net-cur                                             ::<  network to currency
   |=  net/tape

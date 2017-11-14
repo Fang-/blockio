@@ -3,17 +3,20 @@
   ::
 /-  blockio
 /+  blockio, httr-to-json
-[. blockio]
+[. blockio]  ::TODO  =,
 |_  bal/(each balance error)
 ::
 ++  grab                                                ::>  convert to balance
   |%
   ++  noun  &+balance                                   ::<  ...from noun
   ::
-  ++  httr  (cork httr-to-json json)                    ::<  ...from http result
+  ++  httr                                              ::<  ...from http result
+    |=  hit/httr:eyre
+    ::NOTE  because httr-to-json errors if not status 2xx.
+    (json (httr-to-json hit(p 200)))
   ::
   ++  json                                              ::>  ...from json
-    =>  [jo .]
+    =>  [dejs-soft:format .]  ::TODO  =,
     |=  jon/json
     ^-  (each balance error)
     =+  (need ((ot data+(om sa) ~) jon))
